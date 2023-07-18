@@ -4,8 +4,10 @@ import { FocusableInput } from "./components/FocusableInput";
 import { ImageGallery } from "./components/ImageGallery";
 import { PlayerStatus } from "./components/PlayerStatus";
 import { TeamsList } from "./components/TeamsList";
+import { ListItemsForNavigation } from "./components/ListItemsForNavigation";
 
 import './App.css';
+import { Rating } from "./components/Rating";
 
 export default function App() {
 
@@ -30,6 +32,10 @@ export default function App() {
       <br />
       <h3>'TeamsList' test</h3>
       <TeamsList />
+      <br/>
+      <Rating/>
+      <br/>
+      <ListItemsForNavigation />
     </div>
   );
 }

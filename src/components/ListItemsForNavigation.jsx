@@ -9,40 +9,39 @@
  *
  * NOTE: The keydown event will work once the <ul> receives the focus.
  */
-
 import { useEffect, useRef, useState } from "react";
 
-// Simulating a list of items to render.
-// This can be passed through props as well. The constant is declared here for convenience
-const itemsList = Array(10).fill({
-	/** Add the properties you consider, there are no specific requirements related to what you have to render. Be creative :) */
-});
-
+const itemsList = Array(10).fill().map((_, i) => `Item ${i+1}`);
 export function ListItemsForNavigation(props) {
-	const [
-		selectedIndex,
-		setSelectedIndex,
-	] = useState(/** Initialize the state as you need */);
+	const [selectedIndex, setSelectedIndex] = useState(0);
 	const activeItemRef = useRef();
 
-	useEffect(
-		function () {
-			// Focus the item using this effect
-		},
-		[
-			/* Use accordingly the dependencies */
-		]
-	);
+	useEffect(() => {
+		activeItemRef.current.focus();
+	}, [selectedIndex]);
 
 	function handleKeyDown(event) {
-		// Add the proper logic to calculate the index that correspond to the item that should be focused.
+		if (event.key === 'ArrowUp' || event.key === 'ArrowRight') {
+			setSelectedIndex((selectedIndex + 1) % itemsList.length);
+		} else if (event.key === 'ArrowDown' || event.key === 'ArrowLeft') {
+			setSelectedIndex((selectedIndex - 1 + itemsList.length) % itemsList.length);
+		}
 	}
 
 	return (
-		<ul onKeyDown={handleKeyDown}>
-			{/** Render itemsList as you wish, probably you want to render <li></li> with the proper attributes */}
-			{/** If you have issues focusing an element, it is probably because the element is not focusable originally. Try with tabIndex={0} */}
-			{/** Do not forget to pass the reference to the selected item */}
+		<>
+		<ul onKeyDown={handleKeyDown} tabIndex={0}>
+			{itemsList.map((item, index) => (
+				<li
+					key={index}
+					tabIndex={-1}
+					ref={index === selectedIndex ? activeItemRef : null}
+				>
+					{item}
+				</li>
+			))}
 		</ul>
+		</>
+		
 	);
 }
